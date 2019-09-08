@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     URL url = new URL("http://10.251.90.88:5000/checkAlive/");
-                    Log.d("Bruh", "Bruh");
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
 
@@ -74,5 +73,16 @@ public class MainActivity extends AppCompatActivity {
     public void confirmPhone(View view) {
         phoneNumber = phone.getText().toString();
         Toast.makeText(this, "Phone Number Confirmed", Toast.LENGTH_SHORT).show();
+    }
+
+    public void sendDispense(View view) {
+        try {
+            URL url = new URL("http://10.251.90.88:5000/sendDispense/");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.disconnect();
+        } catch(Exception e) {
+            Log.d("Main Activity", e.toString());
+        }
     }
 }

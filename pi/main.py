@@ -6,9 +6,10 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(13, GPIO.OUT)
 
 p = GPIO.PWM(13, 50)
-p.start(10)
+p.start(7.5)
 
 sensor = BMP085.BMP085()
+threshold = 102000
 
 def toDispense():
 	p.ChangeDutyCycle(10)
@@ -16,14 +17,23 @@ def toDispense():
 def toHold():
 	p.ChangeDutyCycle(7.5)
 
+def dispense():
+	toDispense()
+	time.sleep(2)
+	toHold()
+
 try:
 	while True:
-		print('Pressure = {0:0.2f} Pa'.format(sensor.read_pressure()))
-		r = requests.get("http://10.251.90.88:5000/beat/")
-		toDispense()
-		time.sleep(1)
-		toHold()
-		time.sleep(1)
+		pressure = sensor.read_pressure()
+		if(pressure > threshold):
+			r = requests.get("http://10.251.90.88:5000/beat/")
+		
+		should = requests.get("http://10.251.90.88:5000/shouldDispense")
+		if(should == "True"):
+			dispense()
+
+		time.sleep(2)
+
 except KeyboardInterrupt:
 	p.stop()
 	GPIO.cleanup()
