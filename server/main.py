@@ -31,15 +31,16 @@ def checkAlive():
   else:
     return "Alive"
   
-@app.route("/sendDispense")
+@app.route("/sendDispense/")
 def sendDispense():
   global shouldDispense
   shouldDispense = True
 
-  return ""
+  return str(shouldDispense)
 
-@app.route("shouldDispense")
+@app.route("/shouldDispense/")
 def checkDispense():
+  global shouldDispense
   if(shouldDispense):
     shouldDispense = False
     return "True"

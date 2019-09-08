@@ -58,6 +58,36 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("MainActivity", e.toString());
                 }
 
+                //it's 3 and this is not okay code but uh yeah
+                Timer t = new Timer();
+                t.schedule(new TimerTask() {
+
+                    public void run() {
+                        try {
+                            URL url = new URL("http://10.251.90.88:5000/checkAlive/");
+                            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                            con.setRequestMethod("GET");
+
+                            BufferedReader in = new BufferedReader(
+                                    new InputStreamReader(con.getInputStream()));
+                            String inputLine;
+                            StringBuffer content = new StringBuffer();
+                            while ((inputLine = in.readLine()) != null) {
+                                content.append(inputLine);
+                            }
+                            in.close();
+                            con.disconnect();
+
+                            if(content.toString().equals("Dead")) {
+                                onBreakIn();
+                            }
+                        } catch(Exception e) {
+                            Log.d("MainActivity", e.toString());
+                        }
+
+                    }
+                }, 1000);
+
             }
         }, 1000);
     }
@@ -79,7 +109,15 @@ public class MainActivity extends AppCompatActivity {
         try {
             URL url = new URL("http://10.251.90.88:5000/sendDispense/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
             con.disconnect();
         } catch(Exception e) {
             Log.d("Main Activity", e.toString());
