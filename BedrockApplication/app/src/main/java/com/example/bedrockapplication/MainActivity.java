@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             URL url = new URL("http://10.251.90.88:5000/sendDispense/");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
+
             con.disconnect();
         } catch(Exception e) {
             Log.d("Main Activity", e.toString());
