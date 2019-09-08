@@ -9,7 +9,7 @@ p = GPIO.PWM(13, 50)
 p.start(7.5)
 
 sensor = BMP085.BMP085()
-threshold = 102000
+threshold = 101000
 
 def toDispense():
 	p.ChangeDutyCycle(10)
@@ -29,7 +29,8 @@ try:
 			r = requests.get("http://10.251.90.88:5000/beat/")
 		
 		should = requests.get("http://10.251.90.88:5000/shouldDispense")
-		if(should == "True"):
+
+		if(should.text == "True"):
 			dispense()
 
 		time.sleep(2)
