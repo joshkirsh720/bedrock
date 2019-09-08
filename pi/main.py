@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import Adafruit_BMP.BMP085 as BMP085
-import time
+import time, requests
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(13, GPIO.OUT)
@@ -19,6 +19,7 @@ def toHold():
 try:
 	while True:
 		print('Pressure = {0:0.2f} Pa'.format(sensor.read_pressure()))
+		r = requests.get("http://10.251.90.88:5000/beat/")
 		toDispense()
 		time.sleep(1)
 		toHold()
